@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import * as NavigationStateUtils from 'NavigationStateUtils'
 
-import { NAV_PUSH, NAV_POP, NAV_JUMP_TO_KEY, NAV_JUMP_TO_INDEX, NAV_RESET } from './actions'
+import { NAV_PUSH, NAV_POP, NAV_JUMP_TO_KEY, NAV_JUMP_TO_INDEX, NAV_REPLACE_AT_INDEX, NAV_RESET } from './actions'
 const initialNavState = {
 	key: 'MainNavigation',
 	index: 0,
@@ -25,6 +25,10 @@ function navigationState(state = initialNavState, action) {
 
 	case NAV_JUMP_TO_INDEX:
 		return NavigationStateUtils.jumpToIndex(state, action.index)
+
+	case NAV_REPLACE_AT_INDEX:
+		if (state.children[state.index].key === (action.state && action.state.key)) return state
+		return NavigationStateUtils.replaceAtIndex(state, action.index, action.state)
 
 	case NAV_RESET:
 		return {
